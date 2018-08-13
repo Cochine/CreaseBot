@@ -22,7 +22,17 @@ async def get_stats(ctx, bot, in_game_name: str):
 
     try:
         player = watcher.summoner.by_name(my_region, in_game_name)
-        ranked_stats = watcher.league.positions_by_summoner('na1', player['id'])
+        league_positions = watcher.league.positions_by_summoner('na1', player['id'])
+        if league_positions == []:
+            ranked_stats = None
+        else:
+            for queue in league_positions:
+                if queue['queueType'] == 'RANKED_SOLO_5x5':
+                    ranked_stats = queue
+                    break
+                else:
+                    ranked_stats = None
+
 
     except Exception as error:
         await bot.send_message(ctx.message.channel, "Error fetching player stats! Try again!")
@@ -41,7 +51,7 @@ async def get_stats(ctx, bot, in_game_name: str):
         await bot.send_message(ctx.message.channel, embed=embed)
 
     else:
-        ranked_stats = ranked_stats[0]
+        ranked_stats = ranked_stats
         translated_rank = numerals_to_digits(ranked_stats['rank'])
         total_games = int(ranked_stats['wins']) + (int(ranked_stats['losses']))
         win_rate = int((int(ranked_stats['wins']) / total_games) * 100)
