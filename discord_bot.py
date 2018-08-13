@@ -1,7 +1,6 @@
 import os
 import json
 import discord
-import random
 import leaguestats
 from discord.ext import commands
 
@@ -21,25 +20,24 @@ def get_token():
 
 @bot.event
 async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
+    print('------')
+    print('Logged in as %s.' % bot.user.name)
     print(bot.user.id)
     print('------')
     await bot.change_presence(game=discord.Game(name='bot things'))
 
 
 @bot.command(pass_context=True)
-async def ign(ctx, in_game_name: str):
+async def ign(ctx, in_game_name: str, queue_type: str='solo'):
     """Gets the league profile of the user. \n
     Ignore spaces when inputting the IGN."""
+    await leaguestats.get_stats(ctx, bot, in_game_name, queue_type)
 
-    await leaguestats.get_stats(ctx, bot, in_game_name)
 
-
-@ign.error
-async def ign_error(error, ctx):
-    """Error handler for the ign command. """
-    await bot.send_message(ctx.message.channel, "Missing an IGN.")
+# @ign.error
+# async def ign_error(error, ctx):
+#     """Error handler for the ign command. """
+#     await bot.send_message(ctx.message.channel, "Missing an IGN.")
 
 if __name__ == "__main__":
     get_token()

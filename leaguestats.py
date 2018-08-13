@@ -9,15 +9,18 @@ def initialize_watcher(tokens):
     my_region = 'na1'
 
 
-async def get_stats(ctx, bot, in_game_name: str):
+async def get_stats(ctx, bot, in_game_name: str, stat_type: str):
     """Gets the league profile of the user"""
 
     message = ctx.message.content[1:]
     arguments = message.split()
+    stat_type = stat_type.lower()
+    stat_type = get_queue_type(stat_type)
     await bot.send_typing(ctx.message.channel)
 
-    if len(arguments) != 2:
-        print("More than one argument entered.")
+    if len(arguments) != 3 and len(arguments) != 2:
+        print("Invalid number of arguments given.")
+        await bot.send_message(ctx.message.channel, "Invalid number of arguments given.")
         return
 
     try:
@@ -27,7 +30,7 @@ async def get_stats(ctx, bot, in_game_name: str):
             ranked_stats = None
         else:
             for queue in league_positions:
-                if queue['queueType'] == 'RANKED_SOLO_5x5':
+                if queue['queueType'] == stat_type:
                     ranked_stats = queue
                     break
                 else:
@@ -69,6 +72,11 @@ async def get_stats(ctx, bot, in_game_name: str):
             ranked_stats['tier'].lower(), translated_rank))
         await bot.send_message(ctx.message.channel, embed=embed)
 
+def get_queue_type(type):
+    if type == 'solo':
+        return 'RANKED_SOLO_5x5'
+    elif type == 'flex':
+        return 'RANKED_FLEX_SR'
 
 def tier_colour(tier):
     if tier == "challenger":
