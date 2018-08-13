@@ -18,6 +18,7 @@ def get_token():
     with open("token.json", 'r') as token_file:
         tokens = json.loads(token_file.read())
 
+
 @bot.event
 async def on_ready():
     print('Logged in as')
@@ -26,12 +27,19 @@ async def on_ready():
     print('------')
     await bot.change_presence(game=discord.Game(name='bot things'))
 
+
 @bot.command(pass_context=True)
 async def ign(ctx, in_game_name: str):
     """Gets the league profile of the user. \n
     Ignore spaces when inputting the IGN."""
 
     await leaguestats.get_stats(ctx, bot, in_game_name)
+
+
+@ign.error
+async def ign_error(error, ctx):
+    """Error handler for the ign command. """
+    await bot.send_message(ctx.message.channel, "Missing an IGN.")
 
 if __name__ == "__main__":
     get_token()
