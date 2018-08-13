@@ -77,6 +77,8 @@ def get_queue_type(type):
         return 'RANKED_SOLO_5x5'
     elif type == 'flex':
         return 'RANKED_FLEX_SR'
+    elif type == '3v3' or type == 'FlexTT':
+        return 'RANKED_FLEX_TT'
 
 def tier_colour(tier):
     if tier == "challenger":

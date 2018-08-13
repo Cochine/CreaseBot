@@ -34,10 +34,10 @@ async def ign(ctx, in_game_name: str, queue_type: str='solo'):
     await leaguestats.get_stats(ctx, bot, in_game_name, queue_type)
 
 
-# @ign.error
-# async def ign_error(error, ctx):
-#     """Error handler for the ign command. """
-#     await bot.send_message(ctx.message.channel, "Missing an IGN.")
+@ign.error
+async def ign_error(error, ctx):
+    """Error handler for the ign command. """
+    await bot.send_message(ctx.message.channel, "Missing an IGN.")
 
 if __name__ == "__main__":
     get_token()
