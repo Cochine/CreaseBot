@@ -65,7 +65,7 @@ async def get_stats(ctx, bot, in_game_name: str, stat_type: str):
         )
         embed.add_field(name="Summoner Level:", value="%s" % player['summonerLevel'])
         embed.add_field(name="Ranked Tier:", value="%s" % ranked_stats['tier'])
-        embed.add_field(name="Solo Rank:", value="%s" % ranked_stats['rank'])
+        embed.add_field(name="Rank:", value="%s" % ranked_stats['rank'])
         embed.add_field(name="League Points:", value="%s" % ranked_stats['leaguePoints'])
         embed.add_field(name="Winrate:", value="%s%%" % win_rate)
         embed.set_thumbnail(url="http://opgg-static.akamaized.net/images/medals/%s_%s.png" % (
