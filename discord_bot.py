@@ -6,6 +6,7 @@ from discord.ext import commands
 
 client = discord.Client()
 bot = commands.Bot(command_prefix='?')
+bot.remove_command('help')
 tokens = {}
 
 
@@ -28,10 +29,19 @@ async def on_ready():
 
 
 @bot.command(pass_context=True)
+async def msg(ctx):
+    """Copies and repeats the message sent by the user \n
+    The user's message is then deleted. """
+    await bot.send_message(ctx.message.channel, ctx.message.content[4:])
+    await bot.delete_message(ctx.message)
+
+
+@bot.command(pass_context=True)
 async def ign(ctx, in_game_name: str, queue_type: str='solo'):
     """Gets the league profile of the user. \n
     Ignore spaces when inputting the IGN."""
     await leaguestats.get_stats(ctx, bot, in_game_name, queue_type)
+    await bot.delete_message(ctx.message)
 
 
 # @ign.error

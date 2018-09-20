@@ -63,14 +63,14 @@ async def get_stats(ctx, bot, in_game_name: str, stat_type: str):
         )
         embed.set_author(name=player['name'],
                          url='http://na.op.gg/summoner/userName=%s' % in_game_name,
-                         icon_url="http://ddragon.leagueoflegends.com/cdn/8.15.1/img/profileicon/%s.png" %
-            player['profileIconId'])
+                         icon_url="http://opgg-static.akamaized.net/images/medals/%s_%s.png" % (
+            ranked_stats['tier'].lower(), translated_rank))
         embed.add_field(name="Summoner Level:", value="%s" % player['summonerLevel'])
         embed.add_field(name="Ranked Tier:", value="%s %s" % (ranked_stats['tier'], ranked_stats['rank']))
         embed.add_field(name="League Points:", value="%s" % ranked_stats['leaguePoints'])
         embed.add_field(name="Winrate:", value="%s%%" % win_rate)
-        embed.set_thumbnail(url="http://opgg-static.akamaized.net/images/medals/%s_%s.png" % (
-            ranked_stats['tier'].lower(), translated_rank))
+        embed.set_thumbnail(url="http://ddragon.leagueoflegends.com/cdn/8.15.1/img/profileicon/%s.png" %
+            player['profileIconId'])
         embed.set_footer(text=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
         await bot.send_message(ctx.message.channel, embed=embed)
 
